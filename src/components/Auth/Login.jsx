@@ -22,8 +22,10 @@ const Login = () => {
             localStorage.setItem('user', JSON.stringify(response.data.user));
             navigate('/');
         } catch (err) {
-            setError(err.response?.data?.message || 'Login failed. Please try again.');
+            const errorMsg = err.response?.data?.message || err.message || 'Login failed. Please try again.';
+            setError(errorMsg);
         }
+
     };
 
     return (
