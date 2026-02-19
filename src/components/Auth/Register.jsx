@@ -21,11 +21,13 @@ const Register = () => {
         e.preventDefault();
         setError('');
         try {
-            await axios.post('/api/register', formData);
+            const response = await axios.post('/api/register', formData);
             navigate('/login');
         } catch (err) {
-            setError(err.response?.data?.message || 'Registration failed. Please try again.');
+            const errorMsg = err.response?.data?.message || err.message || 'Registration failed. Please try again.';
+            setError(errorMsg);
         }
+
     };
 
     return (
