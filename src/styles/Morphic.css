@@ -1,0 +1,147 @@
+.morphic-container {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at top left, #1a1a1a, #000);
+    position: relative;
+    overflow: hidden;
+}
+
+.morphic-container::before {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: var(--netflix-red);
+    filter: blur(150px);
+    border-radius: 50%;
+    top: -100px;
+    right: -100px;
+    opacity: 0.3;
+}
+
+.morphic-container::after {
+    content: '';
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: #564d4d;
+    filter: blur(180px);
+    border-radius: 50%;
+    bottom: -150px;
+    left: -150px;
+    opacity: 0.2;
+}
+
+.morphic-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 40px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    z-index: 10;
+}
+
+.morphic-title {
+    font-size: 2.5rem;
+    color: white;
+    margin-bottom: 30px;
+    text-align: center;
+    font-weight: 800;
+}
+
+.morphic-title span {
+    color: var(--netflix-red);
+}
+
+.morphic-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.morphic-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.morphic-group label {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-left: 5px;
+}
+
+.morphic-input {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 15px;
+    color: white;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.morphic-input:focus {
+    outline: none;
+    border-color: var(--netflix-red);
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 15px rgba(229, 9, 20, 0.2);
+}
+
+.morphic-button {
+    background: var(--netflix-red);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 15px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 10px;
+}
+
+.morphic-button:hover {
+    background: #f40612;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(229, 9, 20, 0.4);
+}
+
+.morphic-button:active {
+    transform: translateY(0);
+}
+
+.morphic-footer {
+    margin-top: 25px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+}
+
+.morphic-link {
+    color: var(--netflix-red);
+    text-decoration: none;
+    font-weight: 600;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.morphic-link:hover {
+    text-decoration: underline;
+}
+
+.error-message {
+    background: rgba(229, 9, 20, 0.1);
+    color: #ff4d4d;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    text-align: center;
+    border: 1px solid rgba(229, 9, 20, 0.2);
+}
