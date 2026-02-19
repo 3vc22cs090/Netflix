@@ -61,9 +61,14 @@ app.post('/api/register', async (req, res) => {
 
             return res.status(201).json({ message: 'User registered successfully (Aiven DB)', user: newUser.rows[0] });
         } catch (dbErr) {
-            console.error('Aiven DB Error (Falling back to Local):', dbErr.message);
+            console.error('Aiven DB Error:', dbErr.message);
 
-            // Fallback to local JSON
+            // Only fallback to local JSON if NOT on Vercel
+            if (process.env.VERCEL) {
+                return res.status(500).json({ message: 'Database connection failed. Please check your configuration. Error: ' + dbErr.message });
+            }
+
+            console.log('Falling back to Local JSON (Dev Mode)');
             const users = getMockUsers();
             if (users.find(u => u.email === email)) {
                 return res.status(400).json({ message: 'User already exists (Local)' });
@@ -74,10 +79,11 @@ app.post('/api/register', async (req, res) => {
             saveMockUser(newUser);
 
             return res.status(201).json({
-                message: 'User registered successfully (Local Fallback - Aiven DB is currently unreachable)',
+                message: 'User registered successfully (Local Fallback)',
                 user: { id: newUser.id, name: newUser.name, email: newUser.email }
             });
         }
+
     } catch (err) {
         console.error('Fatal Registration Error:', err);
         res.status(500).json({ message: 'Server error: ' + err.message });
@@ -103,11 +109,19 @@ app.post('/api/login', async (req, res) => {
                 const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '1h' });
                 return res.json({ token, user: { id: user.id, name: user.name, email: user.email } });
             }
+
+            // If user not found in real DB and we're on Vercel, fail here
+            if (process.env.VERCEL) {
+                return res.status(400).json({ message: 'Invalid credentials or user not found' });
+            }
         } catch (dbErr) {
-            console.error('Aiven Login Fallback:', dbErr.message);
+            console.error('Aiven Login Error:', dbErr.message);
+            if (process.env.VERCEL) {
+                return res.status(500).json({ message: 'Database query failed: ' + dbErr.message });
+            }
         }
 
-        // Check Local JSON Fallback
+        // Check Local JSON Fallback (Only reachable if not on Vercel or DB missed)
         const users = getMockUsers();
         const user = users.find(u => u.email === email);
         if (!user) {
@@ -121,6 +135,7 @@ app.post('/api/login', async (req, res) => {
 
         const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '1h' });
         res.json({ token, user: { id: user.id, name: user.name, email: user.email } });
+
 
     } catch (err) {
         console.error('Fatal Login Error:', err);
