@@ -26,10 +26,15 @@ const getMockUsers = () => {
 };
 
 const saveMockUser = (user) => {
-    const users = getMockUsers();
-    users.push(user);
-    fs.writeFileSync(MOCK_DB_FILE, JSON.stringify(users, null, 2));
+    try {
+        const users = getMockUsers();
+        users.push(user);
+        fs.writeFileSync(MOCK_DB_FILE, JSON.stringify(users, null, 2));
+    } catch (e) {
+        console.error('Failed to save to mock DB (expected on Vercel):', e.message);
+    }
 };
+
 
 // Root route
 app.get('/', (req, res) => {
