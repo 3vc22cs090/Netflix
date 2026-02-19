@@ -17,7 +17,7 @@ const Login = () => {
         e.preventDefault();
         setError('');
         try {
-            const response = await axios.post('http://localhost:5000/api/login', formData);
+            const response = await axios.post('/api/login', formData);
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('user', JSON.stringify(response.data.user));
             navigate('/');
